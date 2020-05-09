@@ -1,21 +1,9 @@
-
-     class Project {
-        constructor(){
-        this.countries =[]
-        }
-        fetchData = () => {
-            fetch('https://restcountries.eu/rest/v2/all').then(res=> res.json())
-            .then(data=> this.countries = data )
-            }
-        }
-        const myProject = new Project;
-        function setup (){
-            myProject.fetchData();
-        }
-    window.onload = setup;
-     
-
-    
+const rootElem = document.getElementById("root");
+  //Create search feature;
+rootElem.innerHTML = `
+<div id="countryList">
+</div>`; 
+        
     function onload() {
     fetch(`https://restcountries.eu/rest/v2/all`)
       .then((response) => response.json())
