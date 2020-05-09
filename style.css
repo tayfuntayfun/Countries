@@ -1,0 +1,54 @@
+body {
+  margin: 0em;
+  padding: 0;
+  background-color: gainsboro;
+}
+
+#searchBar{
+padding: 20px;
+}
+
+.searchCountries{
+padding: 0.9rem;
+border-radius: 5px;
+border-color: lightcyan;
+width: 30%;
+margin-left: 4em;
+}
+
+#countryList {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 2.8rem;
+}
+.flag {
+  width: fit-content;
+  max-width: 280px;
+  height: 180px;
+  object-fit: fill;
+}
+.country {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 5px;
+  width: 280px;
+  padding-bottom: 1rem;
+}
+
+h1{
+text-align: center;
+}
+
+p{
+  margin: 5px 20px;
+}
+
+
+
+
+
