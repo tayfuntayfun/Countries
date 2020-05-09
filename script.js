@@ -1,79 +1,62 @@
 const rootElem = document.getElementById("root");
   //Create search feature;
 rootElem.innerHTML = `
-<div id="countryList">
+<section id="header-section">
+  <h1>Where in the World?</h1><br>
+  <div class="search-bar">            
+      <input type="search" id="country-search"
+        placeholder="Search for country"
+      />
+    <select name="" id="" class="select-box">
+        <option value=""> All region</option>
+        <option value="Europe"> Europe</option>
+        <option value="Asia"> Asia</option>
+        <option value="Americas">America </option>
+        <option value="Africa"> Africa</option>
+        <option value="Oceania"> Oceania</option>
+    </select>
+  </div>
+</section>
+<div id="Container">
 </div>`; 
         
-    function onload() {
+function setup() {
     fetch(`https://restcountries.eu/rest/v2/all`)
-      .then((response) => response.json())
-      .then((allCountries) => {
-          
-        allCountries.map((country) => {
-          const countryDiv = makeCountry(country);
-          const countryList = document.getElementById(`countryList`);
-          countryList.appendChild(countryDiv);
-          
-        });
-        searchCountriesInput.addEventListener("search", getSearchedCountry(allCountries))
-      });
-  }
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        displayBoxesForCountries(data);    
+      });   
+}
 
-  function makeCountry(countryObj) {
-    const countryDiv = document.createElement(`div`);
-    countryDiv.className = `country`;
-    const flag = document.createElement(`img`);
-    flag.className = `flag`;
-    flag.src = countryObj.flag;
-    countryDiv.appendChild(flag);
-    const countryInfo = document.createElement(`div`);
-    countryInfo.className = `countryInfo`;
-    countryDiv.appendChild(countryInfo);
-    const countryNameElement = document.createElement(`h1`);
-    countryInfo.appendChild(countryNameElement);
-    countryNameElement.className = `countryName`;
-    countryNameElement.textContent = countryObj.name;
-    countryInfo.appendChild(getCountryInfoSentence(`Population`, countryObj.population));
-    countryInfo.appendChild(getCountryInfoSentence(`Region`, countryObj.region));
-    countryInfo.appendChild(getCountryInfoSentence(`Capital`, countryObj.capital));
-    return countryDiv;
-  }
+function displayBoxesForCountries(countryList) {
+  let countries = document.getElementById("Container");
+  countries.innerHTML = createAllCountriesBox(countryList);
+  //Search Field
 
-  function SearchedCountry(countryObj){
-    const countryDiv = document.createElement(`div`);
-    countryDiv.className = `country`;
-    const flag = document.createElement(`img`);
-    flag.className = `flag`;
-    flag.src = countryObj.flag;
-    countryDiv.appendChild(flag);
-    const countryInfo = document.createElement(`div`);
-    countryInfo.className = `countryInfo`;
-    countryDiv.appendChild(countryInfo);
-    const countryNameElement = document.createElement(`h1`);
-    countryInfo.appendChild(countryNameElement);
-    countryNameElement.className = `countryName`;
-    countryNameElement.textContent = countryObj.name;
-    countryInfo.appendChild(getCountryInfoSentence(`Population`, countryObj.population));
-    countryInfo.appendChild(getCountryInfoSentence(`Region`, countryObj.region));
-    countryInfo.appendChild(getCountryInfoSentence(`Capital`, countryObj.capital));
-    return countryDiv;
-  }
+  let searchEntry = document.getElementById("country-search");
+  searchEntry.addEventListener("keyup", function () {
+    let filteredCountry = countryList.filter(
+      (country) => country.name.toLowerCase().includes(searchEntry.value)
+    );
+    countries.innerHTML = createAllCountriesBox(filteredCountry);
+  });
+}
 
-  function getCountryInfoSentence(infoTitle, value) {
-    const sentenceElement = document.createElement(`p`);
-    sentenceElement.innerHTML = `<b>${infoTitle}</b> : ${value}`;
-    return sentenceElement;
-  }
-
-  const searchCountriesInput = document.querySelector(".searchCountries");
-//   Search Button function
-  function getSearchedCountry(allCountries){
-    const x = searchCountriesInput.value.toLowerCase() 
-    console.log(x)
-    allCountries.forEach((country)=>{
-        if (country.name.toLowerCase()  == x){SearchedCountry(country);}
+function createAllCountriesBox(countryObjects) {
+    return countryObjects.map(function (country){
+       return `<div class="country">
+          <img class="flag" src=${country.flag}>
+          <div class="countryInfo">
+            <h1 class="countryName">${country.name}</h1>
+            <p><b>Population :</b> ${country.population}</p>
+            <p><b>Region :</b> ${country.region}</p>
+            <p><b>Capital :</b> ${country.capital}</p>
+          </div>
+        </div>`
     })
-    console.log(x)
-    
-    };
-  window.onload = onload();
+    .join("")
+}
+
+window.onload = setup();
