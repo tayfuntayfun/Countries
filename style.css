@@ -1,9 +1,18 @@
 body {
   margin: 0em;
   padding: 0;
-  background-color: gainsboro;
+  background-color: rgb(228, 146, 146);
 }
 
+.top-bar{
+  display: flex;
+  justify-content: space-between;
+  padding: 2.8rem;
+}
+
+h1{
+  margin-left: 10px;
+}
 .search-bar{
 padding: 20px;
 display: flex;
@@ -14,12 +23,12 @@ justify-content: space-evenly;
 .searchCountries{
 padding: 0.9rem;
 border-radius: 5px;
-border-color: lightcyan;
+border-color: white;
 width: 30%;
 margin-left: 4em;
 }
 
-#Container {
+#country-container {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -27,7 +36,7 @@ margin-left: 4em;
   padding: 2.8rem;
 }
 .flag {
-  width: fit-content;
+  width: auto;
   max-width: 280px;
   height: 180px;
   object-fit: fill;
@@ -36,10 +45,8 @@ margin-left: 4em;
   display: flex;
   flex-direction: column;
   background-color: white;
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: 5px;
-  width: 280px;
+  margin: 10px 10px 5px 10px;
+  width: 250px;
   padding-bottom: 1rem;
 }
 
