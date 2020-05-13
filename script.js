@@ -38,8 +38,8 @@ function setup() {
 function displayBoxesForCountries(countryList) {
   let countries = document.getElementById("country-container");
   countries.innerHTML = createAllCountriesBox(countryList);
-  //Search Field
-
+  
+  //Search By Country
   let searchEntry = document.getElementById("country-search");
   searchEntry.addEventListener("keyup", function () {
     let filteredCountry = countryList.filter(
@@ -48,6 +48,7 @@ function displayBoxesForCountries(countryList) {
     countries.innerHTML = createAllCountriesBox(filteredCountry);
   });
 
+  //Filter By Region
   let filterRegion = document.querySelector("#region-search");
   filterRegion.addEventListener("change", function (event) {
     let regionValue = event.target.value;
@@ -57,16 +58,24 @@ function displayBoxesForCountries(countryList) {
     countries.innerHTML = createAllCountriesBox(countriesFilteredByRegion);
   });
 
+  document.querySelectorAll(".flag").forEach((item) =>
+    item.addEventListener("click", function() {
+      let filterOnFlagClick = countryList.filter((country) => {
+        return country.flag === item.src;
+      });
+      countries.innerHTML = createAllCountriesBox(filterOnFlagClick);
+      document.body.style.backgroundColor = "blue"
+    } )
   
-let getCountryFlag = document.querySelector(".flag")
-console.log(getCountryFlag)
-getCountryFlag.addEventListener("click", function(){
-
-  console.log(getCountryFlag)
-})
+  )
+      
+  
+  // getCountryFlag.addEventListener("click", console.log(element.flag))
+  
 }
 function createAllCountriesBox(countryObjects) {
     return countryObjects.map(function (country){
+     
        return `<div class="country">
           <img class="flag" src=${country.flag}>
           <div class="countryInfo">
@@ -76,8 +85,10 @@ function createAllCountriesBox(countryObjects) {
             <p><b>Capital :</b> ${country.capital}</p>
           </div>
         </div>`
+        
     })
     .join("")
 }
+
 
 window.onload = setup();
