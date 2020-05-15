@@ -8,11 +8,19 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div id="root">
-            <div id="flag-country-details" class="hide">
-                <button type="button" name = "back" class="back">Back</button>
-            </div>
+        <div class="top-bar">
+            <h1>Where in the World?</h1>
+            <button id="mode" type="button">Dark Mode</button>
         </div>
+        <div id="flag-country-details" class="hide">
+            <div>  
+                <button type="button" class="back">&#8592; Back</button>
+            </div> 
+            <div class="flag-and-details"></div>
+        </div>
+        <div id="container" class="show">
+        </div>
+        
         <script src="script.js" ></script>
     </body>
 </html>

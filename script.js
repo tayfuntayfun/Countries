@@ -1,16 +1,10 @@
-const rootElem = document.getElementById("root");
+const mainContainer = document.getElementById("container");
   //Create search feature;
-rootElem.innerHTML += `
-<div id="container">
+  mainContainer.innerHTML = `
   <section id="header-section">
-    <div class="top-bar">
-      <h1>Where in the World?</h1>
-      <button id="mode" type="button">Dark Mode</button>
-    </div>
     <div class="search-bar">            
         <input type="search" id="country-search"
-          placeholder="Search for country"
-        />
+          placeholder="Search for country"/>
       <select name="" id="region-search" class="select-box">
           <option value=""> All regions</option>
           <option value="Europe"> Europe</option>
@@ -21,10 +15,8 @@ rootElem.innerHTML += `
       </select>
     </div>
   </section>
-  
-  <div id="country-container" class="container-hide">
-  </div>
-<div>`; 
+  <div id="country-container">
+  </div>`; 
 
 const URLCountries = "https://restcountries.eu/rest/v2/all"
         
@@ -61,15 +53,15 @@ function displayBoxesForCountries(countryList) {
     countriesContainer.innerHTML = createAllCountriesBox(countriesFilteredByRegion);
   });
 
-  //Brings country info on click on flag
+  //Brings country info on click / flag
   document.querySelectorAll(".flag").forEach((item) =>
     item.addEventListener("click", function() {
+      console.log(item.src)
       let filterOnFlagClick = countryList.find((country) => {
-        if( country.flag === item.src);
-        return country
+        return country.flag === item.src
       });
-      showCountryDetails(filterOnFlagClick);
-   
+      showCountryDetails(filterOnFlagClick);  
+      console.log(filterOnFlagClick) 
     } )
   )
         
@@ -91,44 +83,34 @@ function createAllCountriesBox(countryObjects) {
     .join("")
 }
 
-
 function showCountryDetails(country){
-  
-  let countryDetails = document.querySelector("#flag-country-details")
+  let countryDetails = document.querySelector(".flag-and-details")
   countryDetails.innerHTML = createNewCountryDetailsBox(country)
-  let countryContainer = document.querySelector("#country-container");
-  countryContainer.classList.remove("hide")
-
-  let backButton = document.querySelector(".back")
-  backButton.addEventListener("click",function () {
-    countryContainer.classList.add("hide")
-  });
+  countryDetails.className = "show"
+  document.querySelector("#country-container").className = "hide";
 }
 
+let backButton = document.querySelector("#flag-country-details .back")
+  backButton.addEventListener("click", function () {
+    document.querySelector("#country-container").className = "show";
+    document.querySelector("#flag-country-details").className = "hide"
+  });
+
 function createNewCountryDetailsBox(country) {
-  return `
-        <img id="detail-flag" src=${country.flag}  alt=country flag />
-        <h2>${country.name}</h2>
-        <p><b>Native Name:</b>
-            ${country.nativeName} </p>
-        <p><b>Population:</b>
-            ${country.population}</p>
-        <p><b>Region:</strong>
-                    ${country.region}</p>
-        <p> <b>Sub Region:</b>
-            ${country.subregion} </p>
-        <p><b>Capital:</b>
-            ${country.capital} </p>
-        <p><b>Top Level Domain:</b>
-            ${country.topLevelDomain}</p>
-        <p>
-        <b>Currencies:</b>
-        ${country.currencies.map((currency) => currency.code)}
-        </p>
-        <p>
-            <strong>Languages:</b>
-            ${country.languages.map((language) => language.name)}
-        </p>
-    `;
+  return `  
+  <div>
+    <img class="detail-flag" src=${country.flag}  alt=country flag />
+  </div>
+  <div>
+    <h2>${country.name}</h2>
+    <p><b>Native Name:</b>${country.nativeName} </p>
+    <p><b>Population:</b>${country.population}</p>
+    <p><b>Region:</b>${country.region}</p>
+    <p> <b>Sub Region:</b>${country.subregion} </p>
+    <p><b>Capital:</b>${country.capital} </p>
+    <p><b>Top Level Domain:</b>${country.topLevelDomain}</p>
+    <p><b>Currencies:</b>${country.currencies.map((currency) => currency.code)}</p>
+    <p><b>Languages:</b>${country.languages.map((language) => language.name)}</p>
+  </div>`;
 }
 window.onload = setup();
