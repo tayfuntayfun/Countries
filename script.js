@@ -1,11 +1,11 @@
 const rootElem = document.getElementById("root");
   //Create search feature;
-rootElem.innerHTML = `
+rootElem.innerHTML += `
 <div id="container">
   <section id="header-section">
     <div class="top-bar">
       <h1>Where in the World?</h1>
-      <h1>Dark Mode<h1>
+      <button id="mode" type="button">Dark Mode</button>
     </div>
     <div class="search-bar">            
         <input type="search" id="country-search"
@@ -21,12 +21,15 @@ rootElem.innerHTML = `
       </select>
     </div>
   </section>
-  <div id="country-container">
+  
+  <div id="country-container" class="container-hide">
   </div>
 <div>`; 
+
+const URLCountries = "https://restcountries.eu/rest/v2/all"
         
 function setup() {
-    fetch(`https://restcountries.eu/rest/v2/all`)
+    fetch(URLCountries)
       .then((response) => {
         return response.json();
       })
@@ -36,8 +39,8 @@ function setup() {
 }
 
 function displayBoxesForCountries(countryList) {
-  let countries = document.getElementById("country-container");
-  countries.innerHTML = createAllCountriesBox(countryList);
+  let countriesContainer = document.getElementById("country-container");
+  countriesContainer.innerHTML = createAllCountriesBox(countryList);
   
   //Search By Country
   let searchEntry = document.getElementById("country-search");
@@ -45,7 +48,7 @@ function displayBoxesForCountries(countryList) {
     let filteredCountry = countryList.filter(
       (country) => country.name.toLowerCase().includes(searchEntry.value)
     );
-    countries.innerHTML = createAllCountriesBox(filteredCountry);
+    countriesContainer.innerHTML = createAllCountriesBox(filteredCountry);
   });
 
   //Filter By Region
@@ -55,23 +58,21 @@ function displayBoxesForCountries(countryList) {
     let countriesFilteredByRegion = countryList.filter((country) => {
       return country.region === regionValue;
     });
-    countries.innerHTML = createAllCountriesBox(countriesFilteredByRegion);
+    countriesContainer.innerHTML = createAllCountriesBox(countriesFilteredByRegion);
   });
 
+  //Brings country info on click on flag
   document.querySelectorAll(".flag").forEach((item) =>
     item.addEventListener("click", function() {
-      let filterOnFlagClick = countryList.filter((country) => {
-        return country.flag === item.src;
+      let filterOnFlagClick = countryList.find((country) => {
+        if( country.flag === item.src);
+        return country
       });
-      countries.innerHTML = createAllCountriesBox(filterOnFlagClick);
-      document.body.style.backgroundColor = "blue"
+      showCountryDetails(filterOnFlagClick);
+   
     } )
-  
   )
-      
-  
-  // getCountryFlag.addEventListener("click", console.log(element.flag))
-  
+        
 }
 function createAllCountriesBox(countryObjects) {
     return countryObjects.map(function (country){
@@ -91,4 +92,43 @@ function createAllCountriesBox(countryObjects) {
 }
 
 
+function showCountryDetails(country){
+  
+  let countryDetails = document.querySelector("#flag-country-details")
+  countryDetails.innerHTML = createNewCountryDetailsBox(country)
+  let countryContainer = document.querySelector("#country-container");
+  countryContainer.classList.remove("hide")
+
+  let backButton = document.querySelector(".back")
+  backButton.addEventListener("click",function () {
+    countryContainer.classList.add("hide")
+  });
+}
+
+function createNewCountryDetailsBox(country) {
+  return `
+        <img id="detail-flag" src=${country.flag}  alt=country flag />
+        <h2>${country.name}</h2>
+        <p><b>Native Name:</b>
+            ${country.nativeName} </p>
+        <p><b>Population:</b>
+            ${country.population}</p>
+        <p><b>Region:</strong>
+                    ${country.region}</p>
+        <p> <b>Sub Region:</b>
+            ${country.subregion} </p>
+        <p><b>Capital:</b>
+            ${country.capital} </p>
+        <p><b>Top Level Domain:</b>
+            ${country.topLevelDomain}</p>
+        <p>
+        <b>Currencies:</b>
+        ${country.currencies.map((currency) => currency.code)}
+        </p>
+        <p>
+            <strong>Languages:</b>
+            ${country.languages.map((language) => language.name)}
+        </p>
+    `;
+}
 window.onload = setup();
