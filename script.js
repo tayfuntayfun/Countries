@@ -99,9 +99,9 @@ let backButton = document.querySelector("#flag-country-details .back")
 function createNewCountryDetailsBox(country) {
   return `  
   <div>
-    <img class="detail-flag" src=${country.flag}  alt=country flag />
+    <img class="detail-flag" src=${country.flag}  alt="country flag" />
   </div>
-  <div>
+  <div class="country-information>
     <h2>${country.name}</h2>
     <p><b>Native Name:</b>${country.nativeName} </p>
     <p><b>Population:</b>${country.population}</p>
